@@ -5,6 +5,7 @@ class Site:
     def __init__(self, source, dest):
         self.source = Path(source)
         self.dest = Path(dest)
+        parsers = []
 
     def create_dir(self, path):
         directory = self.dest / path.relative_to(self.source)
@@ -15,3 +16,17 @@ class Site:
         for path in self.source.rglob("*"):
             if path.is_dir():
                 self.create_dir(path)
+            elif path.is_file():
+                self.run_parser(path)
+
+    def load_parser(extension):
+        for parser in self.parsers:
+            if parser.valid_extension(extension):
+                return parser
+
+    def run_parser(path):
+        parser = load_parser(path.suffix)
+        if not None Parser:
+            parser.parse(path, self.source, self.dest)
+        else:
+            print("Not Implemented")
