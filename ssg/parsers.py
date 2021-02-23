@@ -3,32 +3,32 @@ from typing import List
 from pathlib import Path
 
 class Parser:
-    @List[str]
-    extensions = []
+    
+    extensions: List[str] = []  
 
     def valid_extension(self, extension):
-        return if extension in self.extensions
+        return extension in self.extensions
     
-    def parser(path: Path, source: Path, dest: Path):
+    def parse(self, path: Path, source: Path, dest: Path):
         raise NotImplementedError
 
-    def read(path):
-        with open(path) as file:
+    def read(self, path):
+        with open(path, "r") as file:
             return file.read()
 
-    def write(path, dest, content, ext=".html"):
-        full_path = self.dest / path.with_suffix(ext).name
-        with open(full_path) as file:
-            write(file)
+    def write(self, path, dest, content, ext=".html"):
+        full_path = dest / path.with_suffix(ext).name
+        with open(full_path, "w") as file:
+            file.write(content)
 
-    def copy(path, source, dest):
-        shutil.copy2(path, dest/Path(source))
+    def copy(self, path, source, dest):
+        shutil.copy2(path, dest / path.relative_to(source))
     
 class ResourceParser(Parser):
     extensions = [".jpg", ".png", ".gif", ".css", ".html"]
 
-    def parse(path: Path, source: Path, dest: Path):
+    def parse(self, path, source, dest):
         Parser.copy(path, source, dest)
 
-        
+
 
